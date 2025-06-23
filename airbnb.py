@@ -62,7 +62,7 @@ if select == "Data Exploration":
             df1 = df[df["country"] == country]
             df1.reset_index(drop=True, inplace=True)
 
-            room_type = st.selectbox("Select Room Type", df["room_type"].unique())
+            room_type = st.selectbox("Select Room Type", df1["room_type"].unique())
             df2 = df1[df1["room_type"] == room_type]
             df2.reset_index(drop=True, inplace=True)
 
@@ -89,6 +89,7 @@ if select == "Data Exploration":
             fig_pie = px.pie(df_pie, names="host_response_time", values = "price",
                             hover_data=["bedrooms"],color_discrete_sequence=px.colors.sequential.Burg,
                             title="Price for host response time", width=600, height=500)
+            st.plotly_chart(fig_pie)
    
     with tab2:
         st.title("AVAILABILITY ANALYSIS ")
@@ -99,7 +100,7 @@ if select == "Data Exploration":
             df1 = df[df["country"] == country]
             df1.reset_index(drop=True, inplace=True)
 
-            property_ty = st.selectbox("Select Property Type_a", df["property_type"].unique())
+            property_ty = st.selectbox("Select Property Type_a", df1["property_type"].unique())
             df2 = df1[df1["property_type"] == property_ty]
             df2.reset_index(drop=True, inplace=True)
 
@@ -144,6 +145,23 @@ if select == "Data Exploration":
                                         title="Availability in 365 days for room type, bed type and location exact",
                                         color_discrete_sequence=px.colors.sequential.turbid_r)
             st.plotly_chart(df_a_sunb_365)
+        
+        room_ty_a = st.selectbox("Select Room Type_a", df2["room_type"].unique())
+        
+        df3_a = df2[df2["room_type"] == room_ty_a]
+        df3_a.reset_index(drop=True, inplace=True)
+
+        df3_a.groupby("host_response_time")[["availability_30","availability_60",
+                                             "availability_90","availability_365"]].sum()
+        df3_a.reset_index(inplace=True)
+
+        fig_df_mul_bar_a = px.bar(df3_a, x="host_response_time",
+                                  y=["availability_30", "availability_60", "availability_90", "availability_365"],
+                                  title="Availability based on host response time",
+                                  barmode="group",
+                                  color_discrete_sequence=px.colors.qualitative.Pastel,
+                                  width=600, height=500)
+        st.plotly_chart(fig_df_mul_bar_a)
     
     with tab3:
         st.title("LOCATION BASED ANALYSIS")
@@ -154,7 +172,7 @@ if select == "Data Exploration":
             df1 = df[df["country"] == country]
             df1.reset_index(drop=True, inplace=True)
 
-            property_ty = st.selectbox("Select Property Type_b", df["property_type"].unique())
+            property_ty = st.selectbox("Select Property Type_b", df1["property_type"].unique())
             df2 = df1[df1["property_type"] == property_ty]
             df2.reset_index(drop=True, inplace=True)
 
@@ -193,7 +211,7 @@ if select == "Data Exploration":
             df1 = df[df["country"] == country]
             df1.reset_index(drop=True, inplace=True)
 
-            property_ty = st.selectbox("Select Property Type_c", df["property_type"].unique())
+            property_ty = st.selectbox("Select Property Type_c", df1["property_type"].unique())
             df2 = df1[df1["property_type"] == property_ty]
             df2.reset_index(drop=True, inplace=True)
 
@@ -229,7 +247,7 @@ if select == "Data Exploration":
             df1 = df[df["country"] == country]
             df1.reset_index(drop=True, inplace=True)
 
-            property_ty = st.selectbox("Select Property Type_d", df["property_type"].unique())
+            property_ty = st.selectbox("Select Property Type_d", df1["property_type"].unique())
             df2 = df1[df1["property_type"] == property_ty]
             df2.reset_index(drop=True, inplace=True)
 
