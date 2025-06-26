@@ -2,6 +2,7 @@ import pandas as pd
 import streamlit as st
 from streamlit_option_menu import option_menu
 import plotly.express as px
+import os
 
 #streamlit part
 st.set_page_config(layout = "wide")
@@ -47,11 +48,10 @@ if select == "Home":
     st.write("- Pandas")
     st.write("- Streamlit")
     st.write("- Plotly")
+    st.write("- Power BI for dashboard visualization")
 
 if select == "Data Exploration":
-    tab1, tab2, tab3, tab4, tab5 = st.tabs(["Price Analysis", "Availability Analysis", "Location Based",
-                                            "Geospatial Analysis",
-                                            "Top Charts"])
+    tab1, tab2, tab3, tab4, tab5, tab6 = st.tabs(["Price Analysis", "Availability Analysis", "Location Based", "Geospatial Analysis", "Top Charts", "Dashboard"])
     
     with tab1:
         st.title("PRICE DIFFERENCE")
@@ -276,3 +276,28 @@ if select == "Data Exploration":
                                    title='Top 10 Most Expensive Properties', color='price',
                                    color_continuous_scale=px.colors.sequential.Inferno, height=600)
             st.plotly_chart(fig_top_price)
+
+    with tab6:
+        st.title("DASHBOARD (Power BI)")
+        st.write("""
+        This dashboard provides a holistic view of the Airbnb dataset, combining key insights from price analysis, availability, location, and ratings.
+        The dashboard is created using Power BI and includes interactive charts, and tables for in-depth exploration.
+        """)
+
+        st.write("Below is the screenshot of the Power BI dashboard created for this project.")
+        st.image("dashboard/dashboard_overview.png", caption="Dashboard Overview", use_container_width=True)
+        
+        st.write("You can also download the Power BI dashboard file below and explore it in Power BI Desktop.")
+        pbix_path = "dashboard/airbnb_dashboard.pbix"
+        if os.path.exists(pbix_path):
+            with open(pbix_path, "rb") as f:
+                st.download_button(
+                    label="Download Power BI Dashboard (.pbix)",
+                    data=f,
+                    file_name="airbnb_dashboard.pbix",
+                    mime="application/octet-stream"
+                )
+        else:
+            st.warning("Power BI dashboard file not found.")
+
+        
